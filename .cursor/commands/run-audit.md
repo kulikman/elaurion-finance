@@ -1,13 +1,14 @@
 ---
-description: Run audit — полный аудит Template-Projects, при необходимости обновляет rules.json
+description: Run audit for this repository without inventing external template paths
 ---
 
-Выполни полный аудит репозитория **Template-Projects** строго по инструкции в `audit/AUDIT_PROMPT.md`.
+Выполни аудит текущего репозитория, а не внешний шаблон.
 
-1. Прочитай `audit/rules.json` и `CLAUDE.md`.
-2. Проверь дерево `src/` (в т.ч. `src/app/`, `src/lib/`, `src/components/`) и конфиги на соответствие каждому правилу; сформируй отчёт с таблицей статусов.
-3. Допиши запись в `audit/audit-history.json` в массив `entries`.
-4. Если обнаружены конфликты между правилами — задокументируй разрешение в `audit/conflicts.log`.
-5. Если уместно расширить базу — предложи новые правила; по явному согласию пользователя обнови `audit/rules.json` (валидный JSON, уникальные id, обнови `meta`).
+1. Прочитай `AGENTS.md` и `CLAUDE.md`, если они есть.
+2. Если есть `audit/rules.json` и `audit/AUDIT_PROMPT.md`, используй их как source of truth.
+3. Если `audit/` отсутствует, проведи lightweight audit по реальным файлам: stack, scripts, routes, env vars, security-sensitive areas, generated files, docs consistency.
+4. Проверь, что docs/rules не выдумывают команды, APIs, routes, env vars, database fields, services или integrations.
+5. Не создавай и не изменяй `audit/rules.json` без явного согласия пользователя.
+6. После изменений запускай только проверки, которые реально есть в этом repo.
 
-После изменений в коде запусти `pnpm lint` и `pnpm tsc --noEmit`.
+В конце покажи: что проверено, что найдено, что исправлено, какие проверки прошли, остаточные риски.
